@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors</title>
+
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: cursive;
+        }
+
+        body{
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            background: #FFEBB2;
+        }
+
+        .main{
+            padding: 1rem;
+            border-radius: 15px;
+            background: #FFDE95;
+            box-shadow: 0px 5px 10px;
+            text-align: center;
+        }
+
+        .main.start .player_result{
+            animation: playerShake 0.5s ease infinite;
+        }
+        @keyframes playerShake {
+            50%{
+                transform: rotate(30deg) rotateY(180deg);
+            }
+        }
+        .main.start .computer_result{
+            animation: computerShake 0.5s ease infinite;
+        }
+        @keyframes computerShake {
+            50%{
+                transform: rotate(-30deg);
+            }
+        }
+
+        .main.start h1 #span1 {
+            animation: animate 1.5s linear infinite 0.1s;
+        }
+
+        .main.start h1 #span2 {
+            animation: animate 1.5s linear infinite 0.5s;
+        }
+
+        .main.start h1 #span3 {
+            animation: animate 1.5s linear infinite 0.9s;
+        }
+
+        .main.start h1 {
+            animation: animate 1.5s linear infinite 1.6s;
+        }
+
+        @keyframes animate {
+            0%{
+                color: #1d99ce;
+                font-size: 53px;
+            }
+        }
+
+        .result_images{
+            display: flex;
+            column-gap: 5rem;
+        }
+
+        .result_images img{
+            width: 300px;
+        }
+
+        .player_result{
+            transform: rotate(90deg) rotateY(180deg);
+        }
+        .computer_result{
+            transform: rotate(-90deg);
+        }
+
+        .result,h1, button{
+            font-size: 3rem;
+            letter-spacing: 4px;
+        }
+
+        .button_area{
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .button_area button{
+            background-color: #FFDE95;
+            font-size: 3rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            padding: .5rem;
+        }
+
+        button:hover{
+            opacity: 1;
+            transform: translateY(-5px);
+            cursor: pointer;
+        }
+        button:hover:active{
+            opacity: .5;
+            transform: translateY(0px);
+            color: #06D001;
+        }
+        
+       #reset:hover:active{
+            opacity: .5;
+            transform: translateY(0px);
+            color: #e40f00;
+        }
+
+        .score{
+            display: flex;
+            margin-top: 1rem;
+            align-items: center;
+            justify-content: space-evenly;
+            font-size: 2rem;
+        }
+
+        .player_result img.cc{
+            filter: invert(24%) sepia(37%) saturate(7457%) hue-rotate(130deg) brightness(100%) contrast(96%);
+        }
+        .player_result img.cc1{
+            filter: invert(13%) sepia(83%) saturate(7481%) hue-rotate(359deg) brightness(93%) contrast(116%);
+        }
+        .computer_result img.cc{
+            filter: invert(24%) sepia(37%) saturate(7457%) hue-rotate(130deg) brightness(100%) contrast(96%);
+        }
+        .computer_result img.cc1{
+            filter: invert(13%) sepia(83%) saturate(7481%) hue-rotate(359deg) brightness(93%) contrast(116%);
+        }
+        
+    </style>
+</head>
+<body>
+    <section class="main">
+        <div class="title_area" style="display: flex; justify-content: center;">
+            <h1>
+                <span id="span1">Rock,</span>
+                <span id="span2">Paper,</span>
+                <span id="span3">Scissors!</span>
+            </h1>
+        </div>
+        
+        <div class="result_area">
+            <div class="score">
+                <span>Player
+                    <p class="player_score">0</p>
+                </span>
+                <span>Computer
+                    <p class="computer_score">0</p>
+                </span>
+            </div>
+            <div class="result_images">
+                <span class="player_result">
+                    <img src="rock.png" alt="">
+                </span>
+                <span class="computer_result">
+                    <img src="rock.png" alt="">
+                </span>
+            </div>
+            <div class="result">Let's Play!</div>
+        </div>
+
+        <span class="button_area">
+            <button id="start" onclick="gamestart()">Start</button>
+            <button id="reset" onclick="resetGame()">Reset</button>
+        </span>
+
+        <script>
+
+            const gameContainer = document.querySelector('.main'),
+            playerResult = document.querySelector('.player_result img'),
+            computerResult = document.querySelector('.computer_result img'),
+            result = document.querySelector('.result'),
+            start = document.querySelector('button'),
+            playerScoreDisplay = document.querySelector('.player_score'),
+            startButton = document.getElementById("start"),
+            resetButton = document.getElementById("reset"),
+            computerScoreDisplay = document.querySelector('.computer_score');
+
+            let playerScore = 0;
+            let computerScore = 0;
+
+            function gamestart() {
+                startButton.disabled = true;
+                resetButton.disabled = true;
+                playerResult.classList.remove('cc1');
+                computerResult.classList.remove('cc');
+                playerResult.classList.remove('cc');
+                computerResult.classList.remove('cc1');
+                gameContainer.classList.add('start');
+                playerResult.src = computerResult.src = "rock.png";
+                let time = setTimeout(() => {
+                    gameContainer.classList.remove('start');
+                    let playerRandom = Math.floor(Math.random() * 3);
+                    let computerRandom = Math.floor(Math.random() * 3);
+
+                    let player_pick = ['paper.png','rock.png','scissors.png'];
+                    let computer_pick = ['paper.png','rock.png','scissors.png'];
+
+                    playerResult.src = player_pick[playerRandom]
+                    computerResult.src = player_pick[computerRandom]
+
+                    let playerValue = ['P','R','S'][playerRandom];
+                    let computerValue = ['P','R','S'][computerRandom];
+
+                    let resultOutcome = {
+                        RR: 'Draw',
+                        RP: 'Computer',
+                        RS: 'Player',
+                        PP: 'Draw',
+                        PS: 'Computer',
+                        PR: 'Player',
+                        SS: 'Draw',
+                        SR: 'Computer',
+                        SP: 'Player'
+                    };
+                    let resultOutcomeValue = resultOutcome[playerValue + computerValue]
+
+                    result.textContent = playerValue === computerValue ? "Match Draw!" : `${resultOutcomeValue} Wins!`
+
+                    if (playerValue === computerValue) {
+                        result.textContent = "Match Draw!";
+                    } else {
+                        result.textContent = `${resultOutcomeValue} Wins!`;
+                        if (resultOutcomeValue === 'Player') {
+                            playerScore++;
+                            playerResult.classList.add('cc');
+                            computerResult.classList.add('cc1');
+                        } else {
+                            computerScore++;
+                            playerResult.classList.add('cc1');
+                            computerResult.classList.add('cc');
+                        }
+                    }
+
+                    playerScoreDisplay.textContent = playerScore;
+                    computerScoreDisplay.textContent = computerScore;
+
+                    if(playerScore == 5 || computerScore == 5){
+                        startButton.disabled = true;
+                        resetButton.disabled = false;
+                        if(playerScore > computerScore){
+                            result.textContent = `${resultOutcomeValue} Won The Game!`;
+                        }else{
+                            result.textContent = `${resultOutcomeValue} Won The Game!`;
+                        }
+                    }else{
+                        resetButton.disabled = false;
+                        startButton.disabled = false;
+                    }
+                },2000);
+            }
+
+            function resetGame() {
+                startButton.disabled = false;
+                resetButton.disabled = false;
+                playerResult.classList.remove('cc1');
+                computerResult.classList.remove('cc');
+                playerResult.classList.remove('cc');
+                computerResult.classList.remove('cc1');
+                playerScore = 0;
+                computerScore = 0;
+                playerScoreDisplay.textContent = playerScore;
+                computerScoreDisplay.textContent = computerScore;
+                result.textContent = "Let's Play!";
+                playerResult.src = "rock.png";
+                computerResult.src = "rock.png";
+            }
+
+        
+        </script>
+
+    </section>
+</body>
+</html>
